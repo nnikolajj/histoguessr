@@ -9,7 +9,7 @@ const BASE_URL = process.env.NODE_ENV === 'development'
 // Konsole-Ausgabe zur Überprüfung, welche URL verwendet wird
 console.log(`Verwende Backend URL: ${BASE_URL}`);
 
-export async function fetchHistoId(id: number) {
+export async function fetchHistoId(id: number): Promise<HistoryEntity | undefined> {
     try {
         const response = await axios.get<HistoryEntity>(`${BASE_URL}/histo/${id}`);
         console.log(response.data);
@@ -20,10 +20,11 @@ export async function fetchHistoId(id: number) {
         } else {
             console.error("Fehler beim Abruf:", error);
         }
+        return undefined; // Wichtig: Definierten Wert im Fehlerfall zurückgeben
     }
 }
 
-export async function fetchHisto() {
+export async function fetchHisto(): Promise<HistoryEntity | undefined> {
     try {
         const response = await axios.get<HistoryEntity>(`${BASE_URL}/histo/any`);
         console.log(response)
@@ -37,9 +38,10 @@ export async function fetchHisto() {
             console.error("Fehler beim Abruf:", error);
         }
     }
+    return undefined; // Wichtig: Definierten Wert im Fehlerfall zurückgeben
 }
 
-export async function validateHisto( validationEntity: ValidationEntity) {
+export async function validateHisto( validationEntity: ValidationEntity): Promise<number | undefined> {
     try {
 
         console.log("dings arghh: ", validationEntity.place, validationEntity.year)
@@ -52,5 +54,6 @@ export async function validateHisto( validationEntity: ValidationEntity) {
         } else {
             console.error("Fehler beim Abruf:", error);
         }
+        return undefined; // Wichtig: Definierten Wert im Fehlerfall zurückgeben
     }
 }

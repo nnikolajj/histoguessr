@@ -8,8 +8,8 @@ import { AnimatePresence } from 'framer-motion';
 
 
 type HistoCardProps = {
-    year: number;
-    place: string;
+    year: number | undefined;
+    place: string | undefined;
     histo: HistoryEntity;
     setPoints: (points: number) => void;
     setHistoEntity: (histoEntity: HistoryEntity) => void;
@@ -61,21 +61,25 @@ export function HistoCard({year, place, histo, setPoints, setHistoEntity}: Histo
                 <CardContent>
                     <Typography variant="h6">What does it show?</Typography>
 
-                    <Typography variant="body2">
+                    {year &&
+                        <Typography variant="body2">
                         Year: {year}
-                        {histo.date}
-                        {histo.place}
                     </Typography>
+                    }
 
-                    <Typography variant="body2" sx={{mt: 1}}>
-                        Place: {place.replace(/(\d+\.\d{2})\d*/g, "$1")}
-                    </Typography>
+                    {
+                       place &&
+                        <Typography variant="body2" sx={{mt: 1}}>
+                            Place: {place.replace(/(\d+\.\d{2})\d*/g, "$1")}
+                        </Typography>
+                    }
+
                 </CardContent>
 
                 <Button
                     variant="outlined"
                     onClick={async () => {
-                        const validation: number | undefined = await validateHisto({id: histo?.id || 0, year: year, place: place});
+                        const validation: number | undefined = await validateHisto({id: histo?.id || 0, year: year ? year: 0, place: place ? place : "0,0"});
                         validation ? setPoints(validation) : setLoading(true);
                         setShowResult(true);
                     }}

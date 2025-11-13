@@ -1,8 +1,10 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography, Box, IconButton } from "@mui/material";
 import {MapContainer, TileLayer, Marker, Popup, useMapEvents} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState} from "react";
+import {Close} from "@mui/icons-material";
+
 
 // IDEE: EIGENE MARKER
 const markerIcon = new L.Icon({
@@ -36,27 +38,40 @@ function LocationMarker({ setChoosenPlace, disabled }: MapCardProps) {
 
 type MapCardProps = {
     setChoosenPlace: (place: string) => void;
-    disabled: boolean
+    disabled: boolean;
+    isMobile: boolean; // Neu: Indikator, ob es im Mobile Drawer läuft
+    closeDrawer?: () => void; // Neu: Funktion zum Schließen des Drawers
 };
 
-export default function MapCard({ setChoosenPlace, disabled } : MapCardProps) {
+export default function MapCard({ setChoosenPlace, disabled, isMobile, closeDrawer } : MapCardProps) {
 
     const startPosition: [number, number] = [50.226, 10.672];
+    const mapHeight = isMobile ? 'calc(100vh - 100px)' : '450px'; // Dynamische Höhe
 
     return (
         <Card
-            sx={{ width: 400,
+            sx={{
+                width: isMobile ? '100%' : 300, // Mobil: Volle Breite des Drawers, Desktop: 300px
+                minWidth: isMobile ? '100%' : 300,
                 boxShadow: 4,
                 bgcolor: "#F2EAD3",
                 opacity: disabled ? 0.5 : 1,
                 pointerEvents: disabled ? "none" : "auto",
                 transition: "opacity 0.3s ease"
-        }}>
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
+            }}>
+            {/* Header mit Titel und (optional) Schließen-Button */}
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2}}>
+                <Typography variant="h6">
                     Standort auf Karte
                 </Typography>
-                <div style={{ height: "500px", width: "100%" }}>
+                {isMobile && closeDrawer && (
+                    <IconButton onClick={closeDrawer} size="small">
+                        <Close />
+                    </IconButton>
+                )}
+            </Box>
+            <CardContent>
+                <div style={{ height: mapHeight, width: "100%" }}>
                     <MapContainer
                         center={startPosition}
                         zoom={5}
@@ -70,7 +85,7 @@ export default function MapCard({ setChoosenPlace, disabled } : MapCardProps) {
                             attribution="&copy; Esri & contributors"
                         />
 
-                        <LocationMarker setChoosenPlace={setChoosenPlace} disabled={disabled}/>
+                        <LocationMarker setChoosenPlace={setChoosenPlace} disabled={disabled} isMobile={false}/>
                     </MapContainer>
                 </div>
             </CardContent>

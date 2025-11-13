@@ -5,15 +5,18 @@ import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
-import {Button, Card, CardContent, Typography, Collapse} from "@mui/material";
+import {Button, Card, CardContent, Typography, Collapse, Box, IconButton} from "@mui/material";
 import {useState} from "react";
+import {Close} from "@mui/icons-material";
 
 type YearCardProps = {
     setChoosenYear: (year: number) => void;
-    disabled: boolean
+    disabled: boolean;
+    isMobile: boolean; // Neu: Indikator, ob es im Mobile Drawer läuft
+    closeDrawer?: () => void; // Neu: Funktion zum Schließen des Drawers
 };
 
-export default function YearCard({setChoosenYear, disabled}: YearCardProps) {
+export default function YearCard({setChoosenYear, disabled, isMobile, closeDrawer}: YearCardProps) {
     const bigYears = Array.from({length: 10}, (_, i) => 2000 - 50 * i);
     const [expandedYear, setExpandedYear] = useState<number | null>(null);
 
@@ -25,22 +28,42 @@ export default function YearCard({setChoosenYear, disabled}: YearCardProps) {
         setExpandedYear(expandedYear === year ? null : year);
     };
 
+    const handleSubYearClick = (year: number) => {
+        setChoosenYear(year);
+        // Schließt den Drawer nach Auswahl, falls im mobilen Modus
+        if (isMobile && closeDrawer) {
+            closeDrawer();
+        }
+    }
+
     return (
         <Card
             sx={{
-                width: 400,
+                width: isMobile ? '100%' : 300, // Mobil: Volle Breite des Drawers, Desktop: 300px
+                minWidth: isMobile ? '100%' : 300,
                 boxShadow: 4,
                 bgcolor: "#F2EAD3",
                 opacity: disabled ? 0.5 : 1,
                 pointerEvents: disabled ? "none" : "auto",
                 transition: "opacity 0.3s ease"
             }}>
-            <Typography variant="h6" align="center" marginTop={2}>
-                Jahresübersicht
-            </Typography>
+
+            {/* Header mit Titel und (optional) Schließen-Button */}
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2}}>
+                <Typography variant="h6">
+                    Jahresübersicht
+                </Typography>
+                {isMobile && closeDrawer && (
+                    <IconButton onClick={closeDrawer} size="small">
+                        <Close />
+                    </IconButton>
+                )}
+            </Box>
+
             <CardContent
                 sx={{
-                    maxHeight: 450,
+                    // Höhe wird für mobile Ansicht im Drawer fixiert
+                    maxHeight: isMobile ? 'calc(100vh - 100px)' : 450,
                     overflowY: "auto",
                     pr: 1,
                     mt: 2,
@@ -74,7 +97,7 @@ export default function YearCard({setChoosenYear, disabled}: YearCardProps) {
                                     {getSubYears(year).map((subYear, subIndex) => (
                                         <TimelineItem key={subYear}>
                                             <TimelineSeparator>
-                                                <Button onClick={() => setChoosenYear(subYear)}>
+                                                <Button onClick={() => handleSubYearClick(subYear)}>
                                                     <TimelineDot
                                                         sx={{
                                                             bgcolor:
