@@ -2,9 +2,16 @@ import axios from "axios";
 import {HistoryEntity} from "../Entity/HistoryEntity";
 import {ValidationEntity} from "../Entity/ValidationEntity";
 
+const BASE_URL = process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8080'
+    : 'https://histobe.onrender.com';
+
+// Konsole-Ausgabe zur Überprüfung, welche URL verwendet wird
+console.log(`Verwende Backend URL: ${BASE_URL}`);
+
 export async function fetchHistoId(id: number) {
     try {
-        const response = await axios.get<HistoryEntity>(`http://localhost:8080/histo/${id}`);
+        const response = await axios.get<HistoryEntity>(`${BASE_URL}/histo/${id}`);
         console.log(response.data);
         return response.data;
     } catch (error: any) {
@@ -18,7 +25,7 @@ export async function fetchHistoId(id: number) {
 
 export async function fetchHisto() {
     try {
-        const response = await axios.get<HistoryEntity>(`http://localhost:8080/histo/any`);
+        const response = await axios.get<HistoryEntity>(`${BASE_URL}/histo/any`);
         console.log(response)
         if (response.data.id){
             return response.data;
@@ -36,7 +43,7 @@ export async function validateHisto( validationEntity: ValidationEntity) {
     try {
 
         console.log("dings arghh: ", validationEntity.place, validationEntity.year)
-        const response = await axios.post<number>(`http://localhost:8080/histo/${validationEntity.id}/validation`, validationEntity);
+        const response = await axios.post<number>(`${BASE_URL}/histo/${validationEntity.id}/validation`, validationEntity);
 
         return response.data;
     } catch (error: any) {
