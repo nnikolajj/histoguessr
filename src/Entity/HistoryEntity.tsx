@@ -4,4 +4,6 @@ export interface HistoryEntity {
     date: string;
     place: string;
     category: string;
+    title: string;
+    description: string;
 }

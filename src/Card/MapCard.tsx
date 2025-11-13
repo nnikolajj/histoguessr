@@ -4,9 +4,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState} from "react";
 
-
-
-
 // IDEE: EIGENE MARKER
 const markerIcon = new L.Icon({
     iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
@@ -14,16 +11,16 @@ const markerIcon = new L.Icon({
     iconAnchor: [12, 41],
 });
 
-function LocationMarker() {
+function LocationMarker({ setChoosenPlace, disabled }: MapCardProps) {
     const [position, setPosition] = useState<[number, number] | null>(null);
 
     useMapEvents({
         click(e) {
             setPosition([e.latlng.lat, e.latlng.lng]);
+            setChoosenPlace(e.latlng.lat + ", " + e.latlng.lng);
         },
     });
 
-    // Wenn keine Position gesetzt ist, nichts rendern
     if (!position) return null;
 
     return (
@@ -37,17 +34,29 @@ function LocationMarker() {
     );
 }
 
-export default function MapCard() {
+type MapCardProps = {
+    setChoosenPlace: (place: string) => void;
+    disabled: boolean
+};
+
+export default function MapCard({ setChoosenPlace, disabled } : MapCardProps) {
 
     const startPosition: [number, number] = [50.226, 10.672];
 
     return (
-        <Card sx={{ width: 400, boxShadow: 4, bgcolor: "#F2EAD3" }}>
+        <Card
+            sx={{ width: 400,
+                boxShadow: 4,
+                bgcolor: "#F2EAD3",
+                opacity: disabled ? 0.5 : 1,
+                pointerEvents: disabled ? "none" : "auto",
+                transition: "opacity 0.3s ease"
+        }}>
             <CardContent>
                 <Typography variant="h6" gutterBottom>
                     Standort auf Karte
                 </Typography>
-                <div style={{ height: "300px", width: "100%" }}>
+                <div style={{ height: "500px", width: "100%" }}>
                     <MapContainer
                         center={startPosition}
                         zoom={5}
@@ -61,7 +70,7 @@ export default function MapCard() {
                             attribution="&copy; Esri & contributors"
                         />
 
-                        <LocationMarker />
+                        <LocationMarker setChoosenPlace={setChoosenPlace} disabled={disabled}/>
                     </MapContainer>
                 </div>
             </CardContent>
