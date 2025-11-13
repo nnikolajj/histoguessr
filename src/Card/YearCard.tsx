@@ -12,8 +12,8 @@ import {Close} from "@mui/icons-material";
 type YearCardProps = {
     setChoosenYear: (year: number) => void;
     disabled: boolean;
-    isMobile: boolean; // Neu: Indikator, ob es im Mobile Drawer läuft
-    closeDrawer?: () => void; // Neu: Funktion zum Schließen des Drawers
+    isMobile: boolean;
+    closeDrawer?: () => void;
 };
 
 export default function YearCard({setChoosenYear, disabled, isMobile, closeDrawer}: YearCardProps) {
@@ -30,7 +30,7 @@ export default function YearCard({setChoosenYear, disabled, isMobile, closeDrawe
 
     const handleSubYearClick = (year: number) => {
         setChoosenYear(year);
-        // Schließt den Drawer nach Auswahl, falls im mobilen Modus
+
         if (isMobile && closeDrawer) {
             closeDrawer();
         }
@@ -39,8 +39,8 @@ export default function YearCard({setChoosenYear, disabled, isMobile, closeDrawe
     return (
         <Card
             sx={{
-                width: isMobile ? '100%' : 300, // Mobil: Volle Breite des Drawers, Desktop: 300px
-                minWidth: isMobile ? '100%' : 300,
+                width: isMobile ? '100%' : 400,
+                minWidth: isMobile ? '100%' : 400,
                 boxShadow: 4,
                 bgcolor: "#F2EAD3",
                 opacity: disabled ? 0.5 : 1,
@@ -48,7 +48,6 @@ export default function YearCard({setChoosenYear, disabled, isMobile, closeDrawe
                 transition: "opacity 0.3s ease"
             }}>
 
-            {/* Header mit Titel und (optional) Schließen-Button */}
             <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2}}>
                 <Typography variant="h6">
                     Jahresübersicht
@@ -62,7 +61,6 @@ export default function YearCard({setChoosenYear, disabled, isMobile, closeDrawe
 
             <CardContent
                 sx={{
-                    // Höhe wird für mobile Ansicht im Drawer fixiert
                     maxHeight: isMobile ? 'calc(100vh - 100px)' : 450,
                     overflowY: "auto",
                     pr: 1,

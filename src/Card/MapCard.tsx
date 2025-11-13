@@ -39,8 +39,8 @@ function LocationMarker({ setChoosenPlace, disabled }: MapCardProps) {
 type MapCardProps = {
     setChoosenPlace: (place: string) => void;
     disabled: boolean;
-    isMobile: boolean; // Neu: Indikator, ob es im Mobile Drawer läuft
-    closeDrawer?: () => void; // Neu: Funktion zum Schließen des Drawers
+    isMobile: boolean;
+    closeDrawer?: () => void;
 };
 
 export default function MapCard({ setChoosenPlace, disabled, isMobile, closeDrawer } : MapCardProps) {
@@ -51,15 +51,15 @@ export default function MapCard({ setChoosenPlace, disabled, isMobile, closeDraw
     return (
         <Card
             sx={{
-                width: isMobile ? '100%' : 300, // Mobil: Volle Breite des Drawers, Desktop: 300px
-                minWidth: isMobile ? '100%' : 300,
+                width: isMobile ? '100%' : 400,
+                minWidth: isMobile ? '100%' : 400,
                 boxShadow: 4,
                 bgcolor: "#F2EAD3",
                 opacity: disabled ? 0.5 : 1,
                 pointerEvents: disabled ? "none" : "auto",
                 transition: "opacity 0.3s ease"
             }}>
-            {/* Header mit Titel und (optional) Schließen-Button */}
+
             <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2}}>
                 <Typography variant="h6">
                     Standort auf Karte

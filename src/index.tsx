@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ThemeProvider, createTheme } from '@mui/material/styles'; // Importiere ThemeProvider
-import { CssBaseline } from '@mui/material'; // Optional: für konsistentes CSS
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 
 // Definiere einen minimalen, standardmäßigen Theme.
 // MUI benötigt dies, um die Breakpoints (xs, sm, md, etc.) zu verwenden.
 const theme = createTheme({
     palette: {
-        // Hier können Sie Ihre Farbpalette definieren, wenn Sie möchten
+        // Farbpalette
         // primary: { main: '#593a20' },
         // secondary: { main: '#A8763E' },
     },
