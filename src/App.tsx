@@ -15,8 +15,8 @@ import {HistoryEntity} from "./Entity/HistoryEntity";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
 
 function App() {
-    const [choosenYear, setChoosenYear] = useState<number | undefined>(1);
-    const [choosenPlace, setChoosenPlace] = useState<string | undefined>("1, 1");
+    const [choosenYear, setChoosenYear] = useState<number | undefined>();
+    const [choosenPlace, setChoosenPlace] = useState<string | undefined>();
     const [points, setPoints] = useState<number>(0);
     const [histoEntity, setHistoEntity] = useState<HistoryEntity>({
         category: "",
