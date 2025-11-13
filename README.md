@@ -16,3 +16,6 @@ Next changes:
    - Category
 - Users
 - Against Friends (maybe in the next life)
+
+If you want to support:
+https://buymeacoffee.com/gandalf420
