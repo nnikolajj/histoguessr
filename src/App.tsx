@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {HistoCard} from "./Card/HistoCard";
 import {
     Box,
@@ -13,6 +13,7 @@ import MapCard from "./Card/MapCard";
 import YearCard from "./Card/YearCard";
 import {HistoryEntity} from "./Entity/HistoryEntity";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
+import {fetchImage} from "./Service/NaraService";
 
 function App() {
     const [choosenYear, setChoosenYear] = useState<number | undefined>();
@@ -33,6 +34,21 @@ function App() {
     const [yearDrawerOpen, setYearDrawerOpen] = useState(false);
     const [mapDrawerOpen, setMapDrawerOpen] = useState(false);
 
+
+    const [data, setData] = useState<HistoryEntity>();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const dataNara = await fetchImage("World War II");
+                setData(dataNara)
+                console.log("NARA search result", dataNara);
+            } catch (e) {
+                console.error("NARA error", e);
+            }
+        })();
+    }, []);
+
     const toggleYearDrawer = (open: boolean) => () => {
         setYearDrawerOpen(open);
         // Schließt das Map-Drawer, falls es geöffnet ist
@@ -48,10 +64,11 @@ function App() {
     return (
         <Box sx={{ minHeight: "100vh", bgcolor: "#F2EAD3"}}>
 
-            {/* Fonts sind in index.html besser aufgehoben, aber für den Test hier belassen */}
-            <link rel="preconnect" href="https://fonts.googleapis.com"/>
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-            <link href="https://fonts.googleapis.com/css2?family=Nabla&family=Rye&display=swap" rel="stylesheet"/>
+           <img src={data?.picture} alt={data?.picture}>
+           </img>
+            <h1>{data?.date}</h1>
+
+          { /*<HistoryBackground />*/}
 
             <Box sx={{textAlign: "center", pt: 4, pb: 2}}>
                 <Typography variant="h4" component="h1" gutterBottom
@@ -71,7 +88,7 @@ function App() {
                     flexDirection: "column",
                     alignItems: "center",
                     p: 3,
-                    position: "relative", // Für absolute Positionierung der Buttons
+                    position: "relative",
                 }}
             >
                 {/* --- Mobile: Drawer / Buttons --- */}
@@ -137,16 +154,8 @@ function App() {
                         />
                     )}
 
-                    {/* 2. HistoCard (Immer sichtbar) */}
-                    <HistoCard
-                        year={choosenYear}
-                        place={choosenPlace}
-                        histo={histoEntity}
-                        setPoints={setPoints}
-                        setHistoEntity={setHistoEntity}
-                    />
+                    <HistoCard/>
 
-                    {/* 3. MapCard (Desktop oder Drawer) */}
                     {isMobile ? (
                         <Drawer
                             anchor="right"

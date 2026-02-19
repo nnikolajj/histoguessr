@@ -2,24 +2,28 @@ import {Button, Card, CardContent, CardMedia, CircularProgress, Typography} from
 import {useEffect, useState} from "react";
 import {HistoryEntity} from "../Entity/HistoryEntity";
 import {fetchHisto, validateHisto} from "../Service/HistoService";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import HistoInfo from "./HistoInfo";
 import { AnimatePresence } from 'framer-motion';
+import {useValidationData} from "../data/ValidationData";
 
 
 type HistoCardProps = {
-    year: number | undefined;
     place: string | undefined;
     histo: HistoryEntity;
     setPoints: (points: number) => void;
     setHistoEntity: (histoEntity: HistoryEntity) => void;
 };
 
-export function HistoCard({year, place, histo, setPoints, setHistoEntity}: HistoCardProps) {
+export function HistoCard() {
 
     const [loading, setLoading] = useState(true);
     const [showResult, setShowResult] = useState(false);
     const [reload, setReload] = useState(0);
+    const histo = useValidationData((state) => state.histoEntity);
+    const year = useValidationData((state) => state.choosenYear);
+    const place = useValidationData((state) => state.choosenPlace);
+    const addPoints = useValidationData((state) => state.addPoints);
+    const setHistoEntity = useValidationData((state) => state.setHistoEntity);
 
 
 
@@ -80,7 +84,7 @@ export function HistoCard({year, place, histo, setPoints, setHistoEntity}: Histo
                     variant="outlined"
                     onClick={async () => {
                         const validation: number | undefined = await validateHisto({id: histo?.id || 0, year: year ? year: 0, place: place ? place : "0,0"});
-                        validation ? setPoints(validation) : setLoading(true);
+                        validation ? addPoints(validation) : setLoading(true);
                         setShowResult(true);
                     }}
                     sx={{
@@ -89,7 +93,7 @@ export function HistoCard({year, place, histo, setPoints, setHistoEntity}: Histo
                         mx: "auto",
                         my: 3,
                         overflow: "hidden",
-                        backgroundColor: "#344F1F",
+                        backgroundColor: "#4169E1",
                         color: "white",
                         fontWeight: 600,
                         borderRadius: "16px",
@@ -99,21 +103,7 @@ export function HistoCard({year, place, histo, setPoints, setHistoEntity}: Histo
                         transition: "transform 0.3s ease",
                         "&:hover": {
                             transform: "scale(1.05)",
-                        },
-                        "&::before": {
-                            content: '""',
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: "100%",
-                            background: "radial-gradient(circle at var(--x, 50%) var(--y, 50%), #F4991A33 0%, transparent 90%)",
-                            opacity: 0,
-                            transition: "opacity 0.3s ease",
-                        },
-                        "&:hover::before": {
-                            opacity: 1,
-                        },
+                        }
                     }}
                     onMouseMove={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
@@ -121,8 +111,8 @@ export function HistoCard({year, place, histo, setPoints, setHistoEntity}: Histo
                         e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
                     }}
                 >
-                    <AutoAwesomeIcon sx={{ mr: 1 }} />
-                    Guess!
+                    <span style={{ fontSize: '2em', marginRight: '8px', lineHeight: 1 }}>⚜️</span>
+                     Guess!
                 </Button>
             </Card>
         <AnimatePresence>
