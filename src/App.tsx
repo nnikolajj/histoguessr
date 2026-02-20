@@ -7,33 +7,25 @@ import {
     IconButton,
     Drawer,
     useMediaQuery,
-    Theme
+    Theme, ButtonGroup, Button
 } from "@mui/material";
 import MapCard from "./Card/MapCard";
 import YearCard from "./Card/YearCard";
 import {HistoryEntity} from "./Entity/HistoryEntity";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
 import {fetchImage} from "./Service/NaraService";
+import {useValidationData} from "./data/ValidationData";
+import {useFilterData} from "./data/FilterData";
 
 function App() {
-    const [choosenYear, setChoosenYear] = useState<number | undefined>();
-    const [choosenPlace, setChoosenPlace] = useState<string | undefined>();
-    const [points, setPoints] = useState<number>(0);
-    const [histoEntity, setHistoEntity] = useState<HistoryEntity>({
-        category: "",
-        date: "",
-        description: "",
-        id: 0,
-        picture: "",
-        place: "",
-        title: ""
-    });
+    const histoEntity = useValidationData(state => state.histoEntity);
+    const points = useValidationData(state => state.points);
+    const setDatabase = useFilterData(state => state.setDatabase);
 
     // Mobile Responsive Logic
     const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
     const [yearDrawerOpen, setYearDrawerOpen] = useState(false);
     const [mapDrawerOpen, setMapDrawerOpen] = useState(false);
-
 
     const [data, setData] = useState<HistoryEntity>();
 
@@ -62,17 +54,17 @@ function App() {
     };
 
     return (
-        <Box sx={{ minHeight: "100vh", bgcolor: "#F2EAD3"}}>
+        <Box sx={{minHeight: "100vh", bgcolor: "#F2EAD3"}}>
 
-           <img src={data?.picture} alt={data?.picture}>
-           </img>
+            <img src={data?.picture} alt={data?.picture}>
+            </img>
             <h1>{data?.date}</h1>
 
-          { /*<HistoryBackground />*/}
+            { /*<HistoryBackground />*/}
 
             <Box sx={{textAlign: "center", pt: 4, pb: 2}}>
                 <Typography variant="h4" component="h1" gutterBottom
-                            sx = {{
+                            sx={{
                                 fontFamily: "'Rye', serif",
                                 fontSize: {xs: "2rem", md: "3rem"},
                                 color: "#593a20",
@@ -80,7 +72,17 @@ function App() {
                     History Guess
                 </Typography>
                 <Divider sx={{width: "80%", margin: "0 auto", borderColor: "#593a20"}}/>
+                <ButtonGroup
+                    disableElevation
+                    variant="contained"
+                    aria-label="Disabled button group"
+                    sx={{marginTop: 2}}
+                >
+                    <Button onClick={() => setDatabase(1)}>Own DB</Button>
+                    <Button onClick={() => setDatabase(2)}>Nara</Button>
+                </ButtonGroup>
             </Box>
+
 
             <Box
                 sx={{
@@ -93,21 +95,21 @@ function App() {
             >
                 {/* --- Mobile: Drawer / Buttons --- */}
                 {isMobile && (
-                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                    <Box sx={{width: '100%', display: 'flex', justifyContent: 'space-between', mb: 2}}>
                         <IconButton
                             onClick={toggleYearDrawer(true)}
                             disabled={yearDrawerOpen || mapDrawerOpen || (histoEntity.category ?? "").includes("4")}
-                            sx={{ bgcolor: 'rgba(255, 255, 255, 0.8)', boxShadow: 3, '&:hover': { bgcolor: 'white' } }}
+                            sx={{bgcolor: 'rgba(255, 255, 255, 0.8)', boxShadow: 3, '&:hover': {bgcolor: 'white'}}}
                         >
-                            <ChevronRight /> {/* Zeigt nach rechts (öffnet von links) */}
+                            <ChevronRight/> {/* Zeigt nach rechts (öffnet von links) */}
                         </IconButton>
 
                         <IconButton
                             onClick={toggleMapDrawer(true)}
                             disabled={yearDrawerOpen || mapDrawerOpen || (histoEntity.category ?? "").includes("3")}
-                            sx={{ bgcolor: 'rgba(255, 255, 255, 0.8)', boxShadow: 3, '&:hover': { bgcolor: 'white' } }}
+                            sx={{bgcolor: 'rgba(255, 255, 255, 0.8)', boxShadow: 3, '&:hover': {bgcolor: 'white'}}}
                         >
-                            <ChevronLeft /> {/* Zeigt nach links (öffnet von rechts) */}
+                            <ChevronLeft/> {/* Zeigt nach links (öffnet von rechts) */}
                         </IconButton>
                     </Box>
                 )}
@@ -137,10 +139,6 @@ function App() {
                             }}
                         >
                             <YearCard
-                                setChoosenYear={(year) => {
-                                    setChoosenYear(year);
-                                    setYearDrawerOpen(false); // Schließen nach Auswahl
-                                }}
                                 disabled={(histoEntity.category ?? "").includes("4")}
                                 isMobile={true}
                                 closeDrawer={toggleYearDrawer(false)}
@@ -148,7 +146,6 @@ function App() {
                         </Drawer>
                     ) : (
                         <YearCard
-                            setChoosenYear={setChoosenYear}
                             disabled={(histoEntity.category ?? "").includes("4")}
                             isMobile={false}
                         />
@@ -170,10 +167,6 @@ function App() {
                             }}
                         >
                             <MapCard
-                                setChoosenPlace={(place) => {
-                                    setChoosenPlace(place);
-                                    setMapDrawerOpen(false); // Schließen nach Auswahl
-                                }}
                                 disabled={(histoEntity.category ?? "").includes("3")}
                                 isMobile={true}
                                 closeDrawer={toggleMapDrawer(false)}
@@ -181,23 +174,22 @@ function App() {
                         </Drawer>
                     ) : (
                         <MapCard
-                            setChoosenPlace={setChoosenPlace}
                             disabled={(histoEntity.category ?? "").includes("3")}
                             isMobile={false}
                         />
                     )}
                 </Box>
                 {/* Points Anzeige */}
-                <Box sx={{mt: 4, mb: 4}}>
+                <Box sx={{mt: 2, mb: 2}}>
                     <Typography
-                        variant="h3"
+                        variant="h4"
                         sx={{
                             fontFamily: "'Nabla', cursive",
-                            fontSize: {xs: "3rem", md: "4rem"},
+                            fontSize: {xs: "2rem", md: "3rem"},
                             color: "#344F1F",
                             textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
                         }}>
-                        Points: {points}
+                        {points}
                     </Typography>
                 </Box>
             </Box>

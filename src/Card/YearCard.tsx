@@ -8,17 +8,18 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import {Button, Card, CardContent, Typography, Collapse, Box, IconButton} from "@mui/material";
 import {useState} from "react";
 import {Close} from "@mui/icons-material";
+import {useValidationData} from "../data/ValidationData";
 
 type YearCardProps = {
-    setChoosenYear: (year: number) => void;
     disabled: boolean;
     isMobile: boolean;
     closeDrawer?: () => void;
 };
 
-export default function YearCard({setChoosenYear, disabled, isMobile, closeDrawer}: YearCardProps) {
+export default function YearCard({ disabled, isMobile, closeDrawer}: YearCardProps) {
     const bigYears = Array.from({length: 10}, (_, i) => 2000 - 50 * i);
     const [expandedYear, setExpandedYear] = useState<number | null>(null);
+    const setChoosenYear = useValidationData(state => state.setChoosenYear);
 
     const getSubYears = (fromYear: number) => {
         return Array.from({length: 50}, (_, i) => fromYear - i);

@@ -9,11 +9,15 @@ const BASE_URL = process.env.NODE_ENV === 'development'
 // Konsole-Ausgabe zur Überprüfung, welche URL verwendet wird
 console.log(`Verwende Backend URL: ${BASE_URL}`);
 
+
 export async function fetchHistoId(id: number): Promise<HistoryEntity | undefined> {
+
     try {
+
         const response = await axios.get<HistoryEntity>(`${BASE_URL}/histo/${id}`);
         console.log(response.data);
         return response.data;
+
     } catch (error: any) {
         if (error.response && error.response.status === 404) {
             console.error("Histo nicht gefunden");
@@ -38,13 +42,13 @@ export async function fetchHisto(): Promise<HistoryEntity | undefined> {
             console.error("Fehler beim Abruf:", error);
         }
     }
-    return undefined; // Wichtig: Definierten Wert im Fehlerfall zurückgeben
+    return undefined;
 }
 
 export async function validateHisto( validationEntity: ValidationEntity): Promise<number | undefined> {
     try {
 
-        console.log("dings arghh: ", validationEntity.place, validationEntity.year)
+        console.log("validate: ", validationEntity.place, validationEntity.year)
         const response = await axios.post<number>(`${BASE_URL}/histo/${validationEntity.id}/validation`, validationEntity);
 
         return response.data;

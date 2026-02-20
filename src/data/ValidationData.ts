@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import {fetchHisto} from "../Service/HistoService";
 
 interface ValidationData {
-    histoEntity: HistoryEntity | null;
+    histoEntity: HistoryEntity;
     choosenYear: number | undefined;
     choosenPlace: string | undefined;
     points: number;
@@ -18,7 +18,14 @@ interface ValidationData {
 }
 
 export const useValidationData = create<ValidationData>((set) => ({
-    histoEntity: null,
+    histoEntity: {
+        category: "",
+        date: "",
+        description: "",
+        id: 0,
+        picture: "",
+        place: "",
+        title: ""},
     choosenYear: undefined,
     choosenPlace: undefined,
     points: 0,
@@ -33,7 +40,7 @@ export const useValidationData = create<ValidationData>((set) => ({
         set({ loading: true, choosenYear: undefined, choosenPlace: undefined });
         try {
             const data = await fetchHisto();
-            set({ histoEntity: data || null });
+            set({ histoEntity: data });
         } catch (err) {
             console.error(err);
         } finally {

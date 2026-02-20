@@ -1,4 +1,12 @@
+import {create} from "zustand";
 
-export const fasff = (() => {
-    console.log("rraa")
-})
+interface FilterData {
+    database: number
+
+    setDatabase: (db: number) => void;
+}
+
+export const useFilterData = create<FilterData>((set) => ({
+   database: 1,
+   setDatabase: (db) => set({ database: db}),
+}));

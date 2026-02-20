@@ -1,18 +1,11 @@
 import {Button, Card, CardContent, CardMedia, CircularProgress, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
-import {HistoryEntity} from "../Entity/HistoryEntity";
 import {fetchHisto, validateHisto} from "../Service/HistoService";
 import HistoInfo from "./HistoInfo";
 import { AnimatePresence } from 'framer-motion';
 import {useValidationData} from "../data/ValidationData";
-
-
-type HistoCardProps = {
-    place: string | undefined;
-    histo: HistoryEntity;
-    setPoints: (points: number) => void;
-    setHistoEntity: (histoEntity: HistoryEntity) => void;
-};
+import {useFilterData} from "../data/FilterData";
+import {fetchImage} from "../Service/NaraService";
 
 export function HistoCard() {
 
@@ -24,15 +17,21 @@ export function HistoCard() {
     const place = useValidationData((state) => state.choosenPlace);
     const addPoints = useValidationData((state) => state.addPoints);
     const setHistoEntity = useValidationData((state) => state.setHistoEntity);
-
-
+    const database = useFilterData((state) => state.database);
 
     useEffect(() => {
         async function loadData() {
             try {
-                const data = await fetchHisto();
+                setLoading(true);
+                if (database === 1){
+                    const data = await fetchHisto();
+                    data && setHistoEntity(data)
 
-                data && setHistoEntity(data)
+                }
+                else {
+                    const data = await fetchImage("World War 2");
+                    data && setHistoEntity(data);
+                }
 
             } catch (err) {
                 console.error(err);
@@ -42,7 +41,7 @@ export function HistoCard() {
         }
 
         loadData();
-    }, [reload]);
+    }, [reload, database]);
 
     return (<>
             <Card sx={{maxWidth: 600, boxShadow: 4, bgcolor: "#F2EAD3", alignItems: "center"}}>

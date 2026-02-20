@@ -4,6 +4,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState} from "react";
 import {Close} from "@mui/icons-material";
+import {useValidationData} from "../data/ValidationData";
 
 
 // IDEE: EIGENE MARKER
@@ -13,8 +14,9 @@ const markerIcon = new L.Icon({
     iconAnchor: [12, 41],
 });
 
-function LocationMarker({ setChoosenPlace, disabled }: MapCardProps) {
+function LocationMarker({ disabled }: MapCardProps) {
     const [position, setPosition] = useState<[number, number] | null>(null);
+    const setChoosenPlace = useValidationData(state => state.setChoosenPlace);
 
     useMapEvents({
         click(e) {
@@ -36,14 +38,13 @@ function LocationMarker({ setChoosenPlace, disabled }: MapCardProps) {
     );
 }
 
-type MapCardProps = {
-    setChoosenPlace: (place: string) => void;
+interface MapCardProps {
     disabled: boolean;
     isMobile: boolean;
     closeDrawer?: () => void;
 };
 
-export default function MapCard({ setChoosenPlace, disabled, isMobile, closeDrawer } : MapCardProps) {
+export default function MapCard({ disabled, isMobile, closeDrawer } : MapCardProps) {
 
     const startPosition: [number, number] = [50.226, 10.672];
     const mapHeight = isMobile ? 'calc(100vh - 100px)' : '450px'; // Dynamische Höhe
@@ -85,7 +86,7 @@ export default function MapCard({ setChoosenPlace, disabled, isMobile, closeDraw
                             attribution="&copy; Esri & contributors"
                         />
 
-                        <LocationMarker setChoosenPlace={setChoosenPlace} disabled={disabled} isMobile={false}/>
+                        <LocationMarker disabled={disabled} isMobile={false}/>
                     </MapContainer>
                 </div>
             </CardContent>
