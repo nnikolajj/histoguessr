@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useState} from "react";
 import {HistoCard} from "./Card/HistoCard";
 import {
     Box,
@@ -11,9 +11,7 @@ import {
 } from "@mui/material";
 import MapCard from "./Card/MapCard";
 import YearCard from "./Card/YearCard";
-import {HistoryEntity} from "./Entity/HistoryEntity";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
-import {fetchImage} from "./Service/NaraService";
 import {useValidationData} from "./data/ValidationData";
 import {useFilterData} from "./data/FilterData";
 
@@ -27,19 +25,6 @@ function App() {
     const [yearDrawerOpen, setYearDrawerOpen] = useState(false);
     const [mapDrawerOpen, setMapDrawerOpen] = useState(false);
 
-    const [data, setData] = useState<HistoryEntity>();
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const dataNara = await fetchImage("World War II");
-                setData(dataNara)
-                console.log("NARA search result", dataNara);
-            } catch (e) {
-                console.error("NARA error", e);
-            }
-        })();
-    }, []);
 
     const toggleYearDrawer = (open: boolean) => () => {
         setYearDrawerOpen(open);
@@ -55,11 +40,6 @@ function App() {
 
     return (
         <Box sx={{minHeight: "100vh", bgcolor: "#F2EAD3"}}>
-
-            <img src={data?.picture} alt={data?.picture}>
-            </img>
-            <h1>{data?.date}</h1>
-
             { /*<HistoryBackground />*/}
 
             <Box sx={{textAlign: "center", pt: 4, pb: 2}}>

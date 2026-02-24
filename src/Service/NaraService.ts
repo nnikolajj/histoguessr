@@ -9,8 +9,6 @@ const BASE_URL = process.env.NODE_ENV === 'development'
     : 'https://histobe.onrender.com';
 
 export async function fetchImage(searchTerm: string): Promise<HistoryEntity | undefined> {
-    // Ruft den Spring Boot Proxy auf
-    console.log("drin")
     const response = await axios.get<HistoryEntity>(`${BASE_URL}/api/nara/search/${searchTerm}`);
 
     console.log(response)
@@ -18,10 +16,10 @@ export async function fetchImage(searchTerm: string): Promise<HistoryEntity | un
     return response.data;
 }
 
-export async function validateHisto( validationEntity: ValidationEntity): Promise<number | undefined> {
+export async function validateNaraHisto( validationEntity: ValidationEntity): Promise<number | undefined> {
     try {
 
-        console.log("validate: ", validationEntity.place, validationEntity.year)
+        console.log("validate nara: ", validationEntity.place, validationEntity.year)
         const response = await axios.post<number>(`${BASE_URL}/api/nara/histo/${validationEntity.id}/validation`, validationEntity);
 
         return response.data;
@@ -32,5 +30,21 @@ export async function validateHisto( validationEntity: ValidationEntity): Promis
             console.error("Fehler beim Abruf:", error);
         }
         return undefined; // Wichtig: Definierten Wert im Fehlerfall zurückgeben
+    }
+}
+
+export async function fetchNaraHistoId(id: number): Promise<HistoryEntity | undefined> {
+    try {
+        const response = await axios.get<HistoryEntity>(`${BASE_URL}/api/nara/histo/${id}`);
+        console.log(response.data);
+        return response.data;
+
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            console.error("Histo nicht gefunden");
+        } else {
+            console.error("Fehler beim Abruf:", error);
+        }
+        return undefined;
     }
 }

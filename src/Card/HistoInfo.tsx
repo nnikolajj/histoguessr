@@ -3,6 +3,8 @@ import {HistoryEntity} from "../Entity/HistoryEntity";
 import {useEffect, useState} from "react";
 import {fetchHistoId} from "../Service/HistoService";
 import {motion} from "framer-motion";
+import {useFilterData} from "../data/FilterData";
+import {fetchNaraHistoId} from "../Service/NaraService";
 
 type HistoCardProps = {
     id: number;
@@ -14,13 +16,21 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
 
     const [histo, setHisto] = useState<HistoryEntity | null>(null);
     const [loading, setLoading] = useState(true);
+    const database = useFilterData((state) => state.database);
 
     useEffect(() => {
         async function loadData() {
             setLoading(true);
             try {
-                const data = await fetchHistoId(id);
-                setHisto(data || null);
+                if (database === 1){
+                    const data = await fetchHistoId(id);
+                    setHisto(data || null);
+                }
+                else if (database === 2){
+                    const data = await fetchNaraHistoId(id);
+                    setHisto(data || null)
+                }
+
             } catch (err) {
                 console.error(err);
             } finally {
@@ -61,15 +71,18 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
                 animate={{
                     scale: 1,
                     rotateY: 1080,
-                    transition:{
+                    transition: {
                         duration: 3,
-                        ease: [0.25, 0.8, 0.25, 1]}
+                        ease: [0.25, 0.8, 0.25, 1]
+                    }
                 }}
                 exit={{
                     scale: 0,
                     opacity: 0,
-                    transition: { duration: 0.3,
-                        ease: "easeInOut"},
+                    transition: {
+                        duration: 0.3,
+                        ease: "easeInOut"
+                    },
                 }}
 
 
@@ -116,19 +129,18 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
                         >
                             Kategorie: {histo ? histo.category : 0}
                         </Typography>
-                        <Typography variant="body2">
+                        {histo?.date && <Typography variant="body2">
                             Year: {histo?.date}
-                        </Typography>
+                        </Typography>}
 
-                        <Typography variant="body2" sx={{mt: 1}}>
+                        {histo?.place && <Typography variant="body2" sx={{mt: 1}}>
                             Place: {histo?.place}
-                        </Typography>
+                        </Typography>}
                     </CardContent>
 
                     <Button
                         onClick={handleNextQuestion}
                         sx={{
-                            // ... (Styling wie zuvor)
                             position: "relative",
                             display: "block",
                             mx: "auto",

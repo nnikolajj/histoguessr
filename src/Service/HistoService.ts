@@ -24,7 +24,7 @@ export async function fetchHistoId(id: number): Promise<HistoryEntity | undefine
         } else {
             console.error("Fehler beim Abruf:", error);
         }
-        return undefined; // Wichtig: Definierten Wert im Fehlerfall zurückgeben
+        return undefined;
     }
 }
 
