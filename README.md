@@ -7,15 +7,16 @@ Website:
 https://histoguessrfe.onrender.com/
 
 Next changes:
-- Better DB-Entity
-- More Histo's
-- Beautiful design
+- Better design
+- Users
 - Game feature:
    - Multiple Round
    - Time
    - Category
-- Users
-- Against Friends (maybe in the next life)
+   - uploading own histo's
+   - gamification
+   - Against Friends
+   - 3D Histo's
 
 If you want to support:
 https://buymeacoffee.com/gandalf420
