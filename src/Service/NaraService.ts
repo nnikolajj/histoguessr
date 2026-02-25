@@ -48,3 +48,18 @@ export async function fetchNaraHistoId(id: number): Promise<HistoryEntity | unde
         return undefined;
     }
 }
+
+export async function saveNaraHisto(id: number): Promise<number | undefined> {
+    try {
+        const response = await axios.post<number>(`http://localhost:8080/api/nara/saveHisto/${id}`);
+        return response.data;
+
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            console.error("Histo nicht gefunden");
+        } else {
+            console.error("Fehler beim Abruf:", error);
+        }
+        return undefined;
+    }
+}

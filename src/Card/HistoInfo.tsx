@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {fetchHistoId} from "../Service/HistoService";
 import {motion} from "framer-motion";
 import {useFilterData} from "../data/FilterData";
-import {fetchNaraHistoId} from "../Service/NaraService";
+import {fetchNaraHistoId, saveNaraHisto} from "../Service/NaraService";
 
 type HistoCardProps = {
     id: number;
@@ -181,6 +181,12 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
                     >
                         Got It
                     </Button>
+
+                    {process.env.NODE_ENV === 'development' && database === 2 && histo &&
+                        <Button onClick={() => saveNaraHisto(histo?.id)}>
+                            SAVE
+                        </Button>
+                    }
                 </Card>
             </motion.div>
         </Box>

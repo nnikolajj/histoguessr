@@ -2,13 +2,13 @@ import { Button, Card, CardContent, CardMedia, CircularProgress, Typography, Box
 import { useEffect, useState } from "react";
 import { fetchHisto, validateHisto } from "../Service/HistoService";
 import HistoInfo from "./HistoInfo";
-import { AnimatePresence, motion } from 'framer-motion'; // motion hinzugefügt
+import { AnimatePresence, motion } from 'framer-motion';
 import { useValidationData } from "../data/ValidationData";
 import { useFilterData } from "../data/FilterData";
-import { fetchImage, validateNaraHisto } from "../Service/NaraService";
-import SearchIcon from '@mui/icons-material/Search'; // Lupen Icon
+import {fetchImage, saveNaraHisto, validateNaraHisto} from "../Service/NaraService";
+import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import {ImageMagnifier} from "../Components/ImageMagnifier";   // Schließen Icon
+import {ImageMagnifier} from "../Components/ImageMagnifier";
 
 export function HistoCard() {
     const [loading, setLoading] = useState(true);
@@ -115,6 +115,11 @@ export function HistoCard() {
                 >
                     <span style={{ fontSize: '1.5em', marginRight: '8px' }}>⚜️</span> Guess!
                 </Button>
+                {process.env.NODE_ENV === 'development' && database === 2 &&
+                    <Button onClick={() => saveNaraHisto(histo?.id)}>
+                        SAVE
+                    </Button>
+                }
             </Card>
 
             {/* MODAL FÜR GROSSANSICHT */}
