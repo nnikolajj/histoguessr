@@ -21,8 +21,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <React.StrictMode>
-
+    <>
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css2?family=Nabla&family=Rye&display=swap" rel="stylesheet"/>
@@ -33,7 +32,7 @@ root.render(
             <CssBaseline />
             <App />
         </ThemeProvider>
-    </React.StrictMode>
+    </>
 );
 
 reportWebVitals();

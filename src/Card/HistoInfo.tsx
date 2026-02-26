@@ -17,16 +17,16 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
     const [histo, setHisto] = useState<HistoryEntity | null>(null);
     const [loading, setLoading] = useState(true);
     const database = useFilterData((state) => state.database);
+    const [placeName, setPlaceName] = useState<string>();
 
     useEffect(() => {
         async function loadData() {
             setLoading(true);
             try {
-                if (database === 1){
+                if (database === 1) {
                     const data = await fetchHistoId(id);
                     setHisto(data || null);
-                }
-                else if (database === 2){
+                } else if (database === 2) {
                     const data = await fetchNaraHistoId(id);
                     setHisto(data || null)
                 }
@@ -40,6 +40,35 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
 
         loadData();
     }, [id]);
+
+    useEffect(() => {
+        async function getPlace(place: string) {
+
+            if (place && place.length > 0) {
+
+                let placeSplit = place.split(",");
+                let long = placeSplit[0].trim();
+                let lat = placeSplit[1].trim();
+
+                const response = await fetch(`https://photon.komoot.io/reverse?lon=${long}&lat=${lat}`);
+                const data = await response.json();
+
+                console.log("dada", data);
+
+                if (data.features.length > 0) {
+                    const city: string = data.features[0].properties.city;
+                    const country: string = data.features[0].properties.country;
+                    setPlaceName(city + ", " + country);
+                }
+                return null;
+            }
+        }
+
+        if (histo && histo?.place) {
+            getPlace(histo?.place);
+        }
+
+    }, [histo]);
 
     const handleNextQuestion = () => {
         setShowResult(false);
@@ -99,7 +128,7 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
                 >
                     <>
                         {loading ? (
-                            <CircularProgress sx={{margin: 4}}/> // Etwas Margin für den Spinner
+                            <CircularProgress sx={{margin: 4}}/>
                         ) : !histo ? (
                             <Typography color="error" sx={{margin: 4}}>❌ Kein Eintrag gefunden.</Typography>
                         ) : (
@@ -133,8 +162,8 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
                             Year: {histo?.date}
                         </Typography>}
 
-                        {histo?.place && <Typography variant="body2" sx={{mt: 1}}>
-                            Place: {histo?.place}
+                        {histo?.place && histo.place.length > 0 && <Typography variant="body2" sx={{mt: 1}}>
+                            Place: {placeName}
                         </Typography>}
                     </CardContent>
 

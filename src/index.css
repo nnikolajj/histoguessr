@@ -13,4 +13,35 @@ html, body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}html, body {
+     margin: 0;
+     width: 100%;
+     height: 100%;
+     background-color: #F2EAD3;
+     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+     sans-serif;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+ }
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* --- VINTAGE SCROLLBAR --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #F2EAD3; /* Passend zum Haupthintergrund */
+}
+::-webkit-scrollbar-thumb {
+    background: #a68a64; /* Ein schönes, weiches Braun */
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #593a20; /* Dunkler beim drüberfahren */
 }
