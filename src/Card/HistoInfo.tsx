@@ -53,12 +53,17 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
                 const response = await fetch(`https://photon.komoot.io/reverse?lon=${long}&lat=${lat}`);
                 const data = await response.json();
 
-                console.log("dada", data);
-
                 if (data.features.length > 0) {
                     const city: string = data.features[0].properties.city;
                     const country: string = data.features[0].properties.country;
-                    setPlaceName(city + ", " + country);
+
+                    if (city !== undefined){
+                        setPlaceName(city + ", " + country);
+                    }
+                    else {
+                        setPlaceName(country);
+                    }
+
                 }
                 return null;
             }
@@ -113,7 +118,6 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
                         ease: "easeInOut"
                     },
                 }}
-
 
                 style={{transformStyle: "preserve-3d"}}
             >
