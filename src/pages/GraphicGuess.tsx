@@ -1,21 +1,22 @@
-import { useState} from "react";
+import {useState} from "react";
 import {HistoCard} from "../Card/HistoCard";
 import {
     Box,
     Typography,
-    Divider,
     IconButton,
     Drawer,
     useMediaQuery,
-    Theme, ButtonGroup, Button
+    Theme, ButtonGroup, Button,
+    Link as MuiLink
 } from "@mui/material";
 import MapCard from "../Card/MapCard";
 import YearCard from "../Card/YearCard";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
 import {useValidationData} from "../data/ValidationData";
 import {useFilterData} from "../data/FilterData";
+import {Link} from "react-router-dom";
 
-function App() {
+function GraphicGuess() {
     const histoEntity = useValidationData(state => state.histoEntity);
     const points = useValidationData(state => state.points);
     const setDatabase = useFilterData(state => state.setDatabase);
@@ -37,19 +38,22 @@ function App() {
     };
 
     return (
-        <Box sx={{minHeight: "100vh", bgcolor: "#F2EAD3"}}>
+        <>
+            <Box sx={{textAlign: "center", pt: 1, pb: 1}}>
+                <MuiLink component={Link}
+                         to="/"
+                         underline="none"
+                         sx={{color: "inherit"}}>
+                    <Typography variant="h4" component="h1" gutterBottom
+                                sx={{
+                                    fontFamily: "'Rye', serif",
+                                    fontSize: {xs: "2.5rem", md: "2.5rem"},
+                                    color: "#3E2714",
+                                }}>
+                        History Guess
 
-
-            <Box sx={{textAlign: "center", pt: 4, pb: 2}}>
-                <Typography variant="h4" component="h1" gutterBottom
-                            sx={{
-                                fontFamily: "'Rye', serif",
-                                fontSize: {xs: "2.5rem", md: "4rem"},
-                                color: "#3E2714",
-                            }}>
-                    History Guess
-                </Typography>
-                <Divider sx={{width: "80%", margin: "0 auto", borderColor: "rgba(89, 58, 32, 0.3)"}}/>
+                    </Typography>
+                </MuiLink>
 
                 <ButtonGroup
                     variant="outlined"
@@ -121,7 +125,7 @@ function App() {
                             open={yearDrawerOpen}
                             onClose={toggleYearDrawer(false)}
                             PaperProps={{
-                                sx: { width: 300, bgcolor: '#F2EAD3', borderRight: '4px solid #593a20' }
+                                sx: {width: 300, bgcolor: '#F2EAD3', borderRight: '4px solid #593a20'}
                             }}
                         >
                             <YearCard
@@ -131,7 +135,7 @@ function App() {
                             />
                         </Drawer>
                     ) : (
-                        <YearCard disabled={(histoEntity.category ?? "").includes("4")} isMobile={false} />
+                        <YearCard disabled={(histoEntity.category ?? "").includes("4")} isMobile={false}/>
                     )}
 
                     <HistoCard/>
@@ -142,7 +146,7 @@ function App() {
                             open={mapDrawerOpen}
                             onClose={toggleMapDrawer(false)}
                             PaperProps={{
-                                sx: { width: 300, bgcolor: '#F2EAD3', borderLeft: '4px solid #593a20' }
+                                sx: {width: 300, bgcolor: '#F2EAD3', borderLeft: '4px solid #593a20'}
                             }}
                         >
                             <MapCard
@@ -152,7 +156,7 @@ function App() {
                             />
                         </Drawer>
                     ) : (
-                        <MapCard disabled={(histoEntity.category ?? "").includes("3")} isMobile={false} />
+                        <MapCard disabled={(histoEntity.category ?? "").includes("3")} isMobile={false}/>
                     )}
                 </Box>
 
@@ -169,8 +173,9 @@ function App() {
                     </Typography>
                 </Box>
             </Box>
-        </Box>
+        </>
+
     );
 }
 
-export default App;
+export default GraphicGuess;
