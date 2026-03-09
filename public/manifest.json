@@ -1,6 +1,6 @@
 {
-  "short_name": "HistoGuessr",
-  "name": "HistoGuessr",
+  "short_name": "HistoVault",
+  "name": "HistoVault",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

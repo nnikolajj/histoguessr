@@ -50,7 +50,7 @@ function GraphicGuess() {
                                     fontSize: {xs: "2.5rem", md: "2.5rem"},
                                     color: "#3E2714",
                                 }}>
-                        History Guess
+                        History Vault
 
                     </Typography>
                 </MuiLink>
@@ -160,12 +160,12 @@ function GraphicGuess() {
                     )}
                 </Box>
 
-                <Box sx={{mt: 4, mb: 2}}>
+                <Box sx={{mt: 2, mb: 1}}>
                     <Typography
                         variant="h4"
                         sx={{
                             fontFamily: "'Rye', serif",
-                            fontSize: {xs: "3rem", md: "4.5rem"},
+                            fontSize: {xs: "2rem", md: "3rem"},
                             color: "#3E2714",
                             textShadow: "1px 1px 0px rgba(255, 255, 255, 0.5), -1px -1px 2px rgba(0, 0, 0, 0.2)",
                         }}>

@@ -55,7 +55,7 @@ export function HistoCard() {
                 position: 'relative'
             }}>
                 {loading ? (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}><CircularProgress sx={{color: "#8B4513"}} /></Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', p: 5, height:"300px" }}><CircularProgress sx={{color: "#8B4513"}} /></Box>
                 ) : !histo ? (
                     <Typography color="error">❌ Kein Eintrag gefunden.</Typography>
                 ) : (
