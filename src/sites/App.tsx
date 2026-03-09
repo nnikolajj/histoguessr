@@ -1,5 +1,5 @@
 import { useState} from "react";
-import {HistoCard} from "./Card/HistoCard";
+import {HistoCard} from "../Card/HistoCard";
 import {
     Box,
     Typography,
@@ -9,11 +9,11 @@ import {
     useMediaQuery,
     Theme, ButtonGroup, Button
 } from "@mui/material";
-import MapCard from "./Card/MapCard";
-import YearCard from "./Card/YearCard";
+import MapCard from "../Card/MapCard";
+import YearCard from "../Card/YearCard";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
-import {useValidationData} from "./data/ValidationData";
-import {useFilterData} from "./data/FilterData";
+import {useValidationData} from "../data/ValidationData";
+import {useFilterData} from "../data/FilterData";
 
 function App() {
     const histoEntity = useValidationData(state => state.histoEntity);
@@ -38,6 +38,7 @@ function App() {
 
     return (
         <Box sx={{minHeight: "100vh", bgcolor: "#F2EAD3"}}>
+
 
             <Box sx={{textAlign: "center", pt: 4, pb: 2}}>
                 <Typography variant="h4" component="h1" gutterBottom
