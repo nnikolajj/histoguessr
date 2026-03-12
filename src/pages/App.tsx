@@ -2,10 +2,11 @@
 import {Routes, Route, Link} from 'react-router-dom';
 import About from './About';
 import Profile from './Profile';
-import GraphicGuess from "./GraphicGuess";
+import GraphicGuess from "./GraphicGuess/GraphicGuess";
 import ArtefactGuess from "./ArtefactGuess";
 import {Box, Divider, Link as MuiLink} from "@mui/material";
 import Startpage from "./Startpage";
+import GraGuessLayout from "./GraphicGuess/GraGuessLayout";
 
 function App () {
     return (
@@ -19,7 +20,7 @@ function App () {
             <Box sx={{ flex: 1 }}>
                 <Routes>
                     <Route path="/" element={<Startpage />} />
-                    <Route path="/graphic" element={<GraphicGuess />} />
+                    <Route path="/graphicguessr" element={<GraGuessLayout />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/user/:id" element={<Profile />} />
                     <Route path="/artefact" element={<ArtefactGuess />} />

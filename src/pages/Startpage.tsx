@@ -1,7 +1,14 @@
 import {Box, Card, CardActionArea, Divider, Typography} from "@mui/material";
 import { Link } from "react-router-dom";
+import {useFilterData} from "../data/FilterData";
+import {useEffect} from "react";
 
 function Startpage () {
+    const setRound = useFilterData(state => state.setRound);
+
+    useEffect(() => {
+        setRound(0)
+    }, []);
 
     return (
         <>
@@ -46,7 +53,7 @@ function Startpage () {
                     }}>
                         <CardActionArea
                             component={Link}
-                            to="/graphic"
+                            to="/graphicguessr"
                             sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}
                         >
                             <Typography sx={{ fontFamily: "'Rye', serif", color: "#3E2714" }}>

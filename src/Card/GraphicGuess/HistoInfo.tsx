@@ -1,10 +1,10 @@
 import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Typography} from "@mui/material";
-import {HistoryEntity} from "../Entity/HistoryEntity";
+import {HistoryEntity} from "../../Entity/HistoryEntity";
 import {useEffect, useState} from "react";
-import {fetchHistoId} from "../Service/HistoService";
+import {fetchHistoId} from "../../Service/HistoService";
 import {motion} from "framer-motion";
-import {useFilterData} from "../data/FilterData";
-import {fetchNaraHistoId, saveNaraHisto} from "../Service/NaraService";
+import {useFilterData} from "../../data/FilterData";
+import {fetchNaraHistoId, saveNaraHisto} from "../../Service/NaraService";
 
 type HistoCardProps = {
     id: number;

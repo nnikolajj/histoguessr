@@ -4,7 +4,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
-import { useValidationData } from "../data/ValidationData";
+import { useValidationData } from "../../data/ValidationData";
 
 
 // IDEE: EIGENE MARKER

@@ -2,38 +2,33 @@ import * as React from "react";
 import {Card, CardContent, Typography, Box, IconButton, Slider, Divider} from "@mui/material";
 import { useState, useEffect } from "react";
 import { Close, Add, Remove } from "@mui/icons-material";
-import { useValidationData } from "../data/ValidationData";
+import { useValidationData } from "../../data/ValidationData";
 
 type YearCardProps = { disabled: boolean; isMobile: boolean; closeDrawer?: () => void; };
 
 export default function YearCard({ disabled, isMobile, closeDrawer}: YearCardProps) {
-    // Globale Daten
+
     const globalYear = useValidationData(state => state.choosenYear);
     const setChoosenYear = useValidationData(state => state.setChoosenYear);
 
-    // Lokaler State, damit der Slider flüssig gleitet, ohne bei jedem Pixel die App neu zu rendern
     const [localYear, setLocalYear] = useState<number>(globalYear || 1900);
 
-    // Wenn sich das Jahr global ändert (z.B. bei neuer Runde), updaten wir den lokalen State
     useEffect(() => {
         if (globalYear !== undefined) {
             setLocalYear(globalYear);
         } else {
-            setLocalYear(1900); // Standardwert bei Reset
+            setLocalYear(1900);
         }
     }, [globalYear]);
 
-    // Während der Slider gezogen wird (nur Anzeige ändert sich)
     const handleSliderChange = (event: Event, newValue: number | number[]) => {
         setLocalYear(newValue as number);
     };
 
-    // Wenn der Slider losgelassen wird (Jetzt wird das Jahr gelockt und global gespeichert)
     const handleSliderCommit = (event: Event | React.SyntheticEvent | Event, newValue: number | number[]) => {
         setChoosenYear(newValue as number);
     };
 
-    // Für die +/- Buttons
     const adjustYear = (amount: number) => {
         const newYear = Math.min(2024, Math.max(1000, localYear + amount));
         setLocalYear(newYear);

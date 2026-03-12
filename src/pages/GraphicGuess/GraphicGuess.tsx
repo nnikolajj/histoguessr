@@ -1,25 +1,21 @@
 import {useState} from "react";
-import {HistoCard} from "../Card/HistoCard";
+import {HistoCard} from "../../Card/GraphicGuess/HistoCard";
 import {
     Box,
     Typography,
     IconButton,
     Drawer,
     useMediaQuery,
-    Theme, ButtonGroup, Button,
-    Link as MuiLink
+    Theme,
 } from "@mui/material";
-import MapCard from "../Card/MapCard";
-import YearCard from "../Card/YearCard";
+import MapCard from "../../Card/GraphicGuess/MapCard";
+import YearCard from "../../Card/GraphicGuess/YearCard";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
-import {useValidationData} from "../data/ValidationData";
-import {useFilterData} from "../data/FilterData";
-import {Link} from "react-router-dom";
+import {useValidationData} from "../../data/ValidationData";
 
 function GraphicGuess() {
     const histoEntity = useValidationData(state => state.histoEntity);
     const points = useValidationData(state => state.points);
-    const setDatabase = useFilterData(state => state.setDatabase);
 
     // Mobile Responsive Logic
     const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
@@ -39,46 +35,6 @@ function GraphicGuess() {
 
     return (
         <>
-            <Box sx={{textAlign: "center", pt: 1, pb: 1}}>
-                <MuiLink component={Link}
-                         to="/"
-                         underline="none"
-                         sx={{color: "inherit"}}>
-                    <Typography variant="h4" component="h1" gutterBottom
-                                sx={{
-                                    fontFamily: "'Rye', serif",
-                                    fontSize: {xs: "2.5rem", md: "2.5rem"},
-                                    color: "#3E2714",
-                                }}>
-                        History Vault
-
-                    </Typography>
-                </MuiLink>
-
-                <ButtonGroup
-                    variant="outlined"
-                    aria-label="Database selection"
-                    sx={{
-                        marginTop: 3,
-                        '& .MuiButton-root': {
-                            color: '#593a20',
-                            borderColor: 'rgba(89, 58, 32, 0.4)',
-                            fontWeight: 'bold',
-                            fontFamily: "'Georgia', serif",
-                            padding: '6px 24px',
-                            '&:hover': {
-                                borderColor: '#593a20',
-                                backgroundColor: 'rgba(89, 58, 32, 0.08)'
-                            }
-                        },
-                    }}
-                >
-                    <Button onClick={() => setDatabase(1)}>Own DB</Button>
-                    <Button onClick={() => setDatabase(2)}>Nara</Button>
-                </ButtonGroup>
-            </Box>
-
-
             <Box
                 sx={{
                     display: "flex",
