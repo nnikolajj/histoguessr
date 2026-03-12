@@ -34,7 +34,6 @@ function GraGuessLayout(){
                 round >= 1 &&
                 <GraphicGuess/>
             }
-
         </Box>
     );
 }
