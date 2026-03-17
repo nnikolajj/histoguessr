@@ -2,11 +2,16 @@ import {Box, Button, ButtonGroup, Card, Typography} from "@mui/material";
 import {useFilterData} from "../../data/FilterData";
 import {validateHisto} from "../../Service/HistoService";
 import {validateNaraHisto} from "../../Service/NaraService";
+import MainButton from "../../Components/MainButton";
+import {startGame} from "../../Service/GameService";
+import {GameSeedEntity} from "../../Entity/GameSeedEntity";
+import {useState} from "react";
 
 function GraGuessSettings(){
 
+    const database = useFilterData(state => state.database)
     const setDatabase = useFilterData(state => state.setDatabase);
-    const setRound = useFilterData(state => state.setRound);
+    const setGameSeed = useFilterData(state => state.setSeed);
 
     return (
         <Box
@@ -49,39 +54,20 @@ function GraGuessSettings(){
                     },
                 }}
             >
-                <Button onClick={() => setDatabase(1)}>Own DB</Button>
-                <Button onClick={() => setDatabase(2)}>Nara</Button>
+                <Button onClick={() => setDatabase(0)}>Own DB</Button>
+                <Button onClick={() => setDatabase(1)}>Nara</Button>
             </ButtonGroup>
 
-                <Button
-                    variant="contained"
-                    onClick={ () => setRound(1)}
-                    sx={{
-                        display: "block", mx: "auto", mb: 4, mt: 2,
-                        borderRadius: "30px",
-                        fontWeight: "bold",
-                        fontSize: "1.1rem",
-                        color: "#3E2714",
-                        background: "linear-gradient(145deg, #D4AF37 0%, #B08D57 100%)",
-                        borderTop: "1px solid rgba(255,255,255,0.4)",
-                        borderBottom: "2px solid rgba(0,0,0,0.2)",
-                        marginTop: "28vh",
-                        boxShadow: "0 6px 15px rgba(89, 58, 32, 0.3)",
-                        transition: "all 0.3s ease",
-                        px: 4, py: 1.5,
-                        "&:hover": {
-                            background: "linear-gradient(145deg, #EAC353 0%, #C5A959 100%)",
-                            transform: "translateY(-2px)",
-                            boxShadow: "0 8px 20px rgba(89, 58, 32, 0.4)",
-                        },
-                        "&:active": {
-                            transform: "translateY(1px)",
-                            boxShadow: "inset 0 3px 5px rgba(0,0,0,0.2)",
-                        }
+                <MainButton
+                    onAction={async () => {
+                         const data = await startGame(database)
+                        data ? setGameSeed(data) : <> error </>
+
                     }}
-                >
-                    <span style={{ fontSize: '1.5em', marginRight: '12px' }}>⚜️</span> Start!
-                </Button>
+                    size={5}
+                    text={<><span style={{ fontSize: '1.5em', marginRight: '12px' }}>⚜️</span> Start</>}
+
+                />
             </Card>
         </Box>
     );

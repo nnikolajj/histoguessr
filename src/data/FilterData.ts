@@ -1,19 +1,35 @@
-import {create} from "zustand";
+import { create } from "zustand";
+import { GameSeedEntity } from "../Entity/GameSeedEntity";
+import { produce } from "immer";
 
 interface FilterData {
-    database: number
-    round: number
+    database: number;
+    seed: GameSeedEntity;
 
     setDatabase: (db: number) => void;
-    setRound: (round: number | undefined) => void;
+    setSeed: (seed: GameSeedEntity) => void;
 
+    updateSeed: (recipe: (draft: GameSeedEntity) => void) => void;
 }
 
 export const useFilterData = create<FilterData>((set) => ({
-   database: 1,
-    round: 0,
+    database: 1,
+    seed: {
+        id: "",
+        histoId: [],
+        type: 0,
+        shortId: "",
+        state: 0,
+        date: ""
+    },
 
-   setDatabase: (db) => set({ database: db}),
-    setRound: (round) => set({ round: round }),
+    setDatabase: (db) => set({ database: db }),
+    setSeed: (seed) => set({ seed: seed }),
 
+    updateSeed: (recipe) =>
+        set(
+            produce((state: FilterData) => {
+                recipe(state.seed);
+            })
+        ),
 }));

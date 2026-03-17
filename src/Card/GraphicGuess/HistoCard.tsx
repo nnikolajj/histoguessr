@@ -1,14 +1,15 @@
 import { Button, Card, CardContent, CardMedia, CircularProgress, Typography, Box, Modal, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
-import { fetchHisto, validateHisto } from "../../Service/HistoService";
+import {fetchHisto, fetchHistoById, validateHisto} from "../../Service/HistoService";
 import HistoInfo from "./HistoInfo";
 import { AnimatePresence, motion } from 'framer-motion';
 import { useValidationData } from "../../data/ValidationData";
 import { useFilterData } from "../../data/FilterData";
-import { fetchImage, validateNaraHisto } from "../../Service/NaraService";
+import {fetchImage, validateNaraHisto} from "../../Service/NaraService";
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import {ImageMagnifier} from "../../Components/ImageMagnifier";
+import MainButton from "../../Components/MainButton";
 
 export function HistoCard() {
     const [loading, setLoading] = useState(true);
@@ -22,13 +23,15 @@ export function HistoCard() {
     const addPoints = useValidationData((state) => state.addPoints);
     const setHistoEntity = useValidationData((state) => state.setHistoEntity);
     const database = useFilterData((state) => state.database);
+    const seed = useFilterData((state) => state.seed);
+    const updateSeed = useFilterData((state) => state.updateSeed);
 
     useEffect(() => {
         async function loadData() {
             try {
                 setLoading(true);
-                if (database === 1) {
-                    const data = await fetchHisto();
+                if (database === 0) {
+                    const data = await fetchHistoById(seed.histoId.at(seed.state));
                     data && setHistoEntity(data)
                 } else {
                     const data = await fetchImage("World War 2");
@@ -84,7 +87,7 @@ export function HistoCard() {
                                 position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 opacity: 0, transition: 'opacity 0.3s ease',
-                                bgcolor: 'rgba(89, 58, 32, 0.3)' // Braun-Stich beim Hover
+                                bgcolor: 'rgba(89, 58, 32, 0.3)'
                             }}
                         >
                             <SearchIcon sx={{ color: '#F2EAD3', fontSize: 50, filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.5))' }} />
@@ -104,43 +107,23 @@ export function HistoCard() {
                     )}
                 </CardContent>
 
-                <Button
-                    variant="contained"
-                    onClick={async () => {
-                        const validateFn = database === 1 ? validateHisto : validateNaraHisto;
-                        const validation = await validateFn({
-                            id: histo?.id || 0,
-                            year: year ? year : 0,
-                            place: place ? place : "0,0"
-                        });
-                        validation ? addPoints(validation) : setLoading(true);
-                        setShowResult(true);
-                    }}
-                    sx={{
-                        display: "block", mx: "auto", mb: 4, mt: 2,
-                        borderRadius: "30px",
-                        fontWeight: "bold",
-                        fontSize: "1.1rem",
-                        color: "#3E2714",
-                        background: "linear-gradient(145deg, #D4AF37 0%, #B08D57 100%)",
-                        borderTop: "1px solid rgba(255,255,255,0.4)",
-                        borderBottom: "2px solid rgba(0,0,0,0.2)",
-                        boxShadow: "0 6px 15px rgba(89, 58, 32, 0.3)",
-                        transition: "all 0.3s ease",
-                        px: 4, py: 1.5,
-                        "&:hover": {
-                            background: "linear-gradient(145deg, #EAC353 0%, #C5A959 100%)",
-                            transform: "translateY(-2px)",
-                            boxShadow: "0 8px 20px rgba(89, 58, 32, 0.4)",
-                        },
-                        "&:active": {
-                            transform: "translateY(1px)",
-                            boxShadow: "inset 0 3px 5px rgba(0,0,0,0.2)",
-                        }
-                    }}
-                >
-                    <span style={{ fontSize: '1.5em', marginRight: '12px' }}>⚜️</span> GUESS!
-                </Button>
+               <MainButton
+                   onAction={
+                   async () => {
+                       const validateFn = database === 0 ? validateHisto : validateNaraHisto;
+                       const validation = await validateFn({
+                           id: histo?.id || 0,
+                           year: year ? year : 0,
+                           place: place ? place : "0,0"
+                       });
+
+                       validation ? addPoints(validation) : setLoading(true);
+                       updateSeed(seed => {seed.state += 1});
+                       setShowResult(true);
+               }}
+                   size={5}
+                   text={<><span style={{ fontSize: '1.5em', marginRight: '12px' }}>⚜️</span> Guess!</>}
+               />
             </Card>
 
             <Modal open={imageOpen} onClose={() => setImageOpen(false)} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}>

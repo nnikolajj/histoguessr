@@ -3,10 +3,23 @@ import {Link} from "react-router-dom";
 import {useFilterData} from "../../data/FilterData";
 import GraGuessSettings from "./GraGuessSettings";
 import GraphicGuess from "./GraphicGuess";
+import {useEffect} from "react";
 
 function GraGuessLayout(){
 
-    const round = useFilterData(state => state.round);
+    const seed = useFilterData(state => state.seed);
+    const setSeed = useFilterData(state => state.setSeed);
+
+    useEffect(() => {
+        setSeed({
+            id: "",
+            histoId: [],
+            type: 0,
+            shortId: "",
+            state: 0,
+            date: ""
+        })
+    }, []);
 
     return (
         <Box>
@@ -27,12 +40,16 @@ function GraGuessLayout(){
                 </MuiLink>
             </Box>
 
-            {round === 0 &&
+            {!seed.id &&
                 <GraGuessSettings/>
             }
             {
-                round >= 1 &&
+                seed.id &&
                 <GraphicGuess/>
+            }
+            {
+                seed.state == 6 &&
+                <GraGuessSettings/>
             }
         </Box>
     );

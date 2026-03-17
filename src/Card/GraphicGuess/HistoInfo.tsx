@@ -5,6 +5,7 @@ import {fetchHistoId} from "../../Service/HistoService";
 import {motion} from "framer-motion";
 import {useFilterData} from "../../data/FilterData";
 import {fetchNaraHistoId, saveNaraHisto} from "../../Service/NaraService";
+import MainButton from "../../Components/MainButton";
 
 type HistoCardProps = {
     id: number;
@@ -23,10 +24,10 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
         async function loadData() {
             setLoading(true);
             try {
-                if (database === 1) {
+                if (database === 0) {
                     const data = await fetchHistoId(id);
                     setHisto(data || null);
-                } else if (database === 2) {
+                } else if (database === 1) {
                     const data = await fetchNaraHistoId(id);
                     setHisto(data || null)
                 }
@@ -79,7 +80,6 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
         setShowResult(false);
         setReload(prevReload => prevReload + 1);
     };
-
 
     return (
         <Box
@@ -171,49 +171,7 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
                         </Typography>}
                     </CardContent>
 
-                    <Button
-                        onClick={handleNextQuestion}
-                        sx={{
-                            position: "relative",
-                            display: "block",
-                            mx: "auto",
-                            my: 3,
-                            overflow: "hidden",
-                            backgroundColor: "#344F1F",
-                            color: "white",
-                            fontWeight: 600,
-                            borderRadius: "16px",
-                            px: 3,
-                            py: 1,
-                            boxShadow: "0 4px 10px rgba(0,0,0,0.25)",
-                            transition: "transform 0.3s ease",
-                            "&:hover": {
-                                transform: "scale(1.05)",
-                            },
-                            "&::before": {
-                                content: '""',
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                width: "100%",
-                                height: "100%",
-                                background: "radial-gradient(circle at var(--x, 50%) var(--y, 50%), #F4991A33 0%, transparent 70%)",
-                                opacity: 0,
-                                transition: "opacity 0.3s ease",
-                            },
-                            "&:hover::before": {
-                                opacity: 1,
-                            },
-                        }}
-
-                        onMouseMove={(e) => {
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
-                            e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
-                        }}
-                    >
-                        Got It
-                    </Button>
+                    <MainButton onAction={handleNextQuestion} size={3} text={"Next"}/>
 
                     {process.env.NODE_ENV === 'development' && database === 2 && histo &&
                         <Button onClick={() => saveNaraHisto(histo?.id)}>

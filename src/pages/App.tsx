@@ -20,7 +20,8 @@ function App () {
             <Box sx={{ flex: 1 }}>
                 <Routes>
                     <Route path="/" element={<Startpage />} />
-                    <Route path="/graphicguessr" element={<GraGuessLayout />} />
+                    <Route path="/histoguessing" element={<GraGuessLayout />} />
+                    <Route path="/histoguessing/:id" element={<GraphicGuess />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/user/:id" element={<Profile />} />
                     <Route path="/artefact" element={<ArtefactGuess />} />

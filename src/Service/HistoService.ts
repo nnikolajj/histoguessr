@@ -45,6 +45,23 @@ export async function fetchHisto(): Promise<HistoryEntity | undefined> {
     return undefined;
 }
 
+export async function fetchHistoById(id: any): Promise<HistoryEntity | undefined> {
+    try {
+        const response = await axios.get<HistoryEntity>(`${BASE_URL}/histo/${id}`);
+        console.log(response)
+        if (response.data.id){
+            return response.data;
+        }
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            console.error("Histo nicht gefunden");
+        } else {
+            console.error("Fehler beim Abruf:", error);
+        }
+    }
+    return undefined;
+}
+
 export async function validateHisto( validationEntity: ValidationEntity): Promise<number | undefined> {
     try {
 
