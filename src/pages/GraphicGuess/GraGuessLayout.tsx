@@ -9,6 +9,7 @@ function GraGuessLayout(){
 
     const seed = useFilterData(state => state.seed);
     const setSeed = useFilterData(state => state.setSeed);
+    const setEndGame = useFilterData(state => state.setEndGame);
 
     useEffect(() => {
         setSeed({
@@ -19,6 +20,8 @@ function GraGuessLayout(){
             state: 0,
             date: ""
         })
+
+        setEndGame(false);
     }, []);
 
     return (
@@ -34,23 +37,14 @@ function GraGuessLayout(){
                                     fontSize: {xs: "2.5rem", md: "2.5rem"},
                                     color: "#3E2714",
                                 }}>
-                        History Vault
+                        HistoArch
 
                     </Typography>
                 </MuiLink>
             </Box>
 
-            {!seed.id &&
-                <GraGuessSettings/>
-            }
-            {
-                seed.id &&
-                <GraphicGuess/>
-            }
-            {
-                seed.state == 6 &&
-                <GraGuessSettings/>
-            }
+            <GraGuessSettings/>
+
         </Box>
     );
 }

@@ -18,6 +18,9 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
     const [histo, setHisto] = useState<HistoryEntity | null>(null);
     const [loading, setLoading] = useState(true);
     const database = useFilterData((state) => state.database);
+    const gameSeed = useFilterData((state) => state.seed);
+    const setEndGame = useFilterData((state) => state.setEndGame);
+
     const [placeName, setPlaceName] = useState<string>();
 
     useEffect(() => {
@@ -79,6 +82,11 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
     const handleNextQuestion = () => {
         setShowResult(false);
         setReload(prevReload => prevReload + 1);
+
+        if (gameSeed.state === 5) {
+            console.log("status quo", gameSeed.state);
+            setEndGame(true);
+        }
     };
 
     return (
@@ -173,7 +181,7 @@ export default function HistoInfo({id, setShowResult, setReload}: HistoCardProps
 
                     <MainButton onAction={handleNextQuestion} size={3} text={"Next"}/>
 
-                    {process.env.NODE_ENV === 'development' && database === 2 && histo &&
+                    {process.env.NODE_ENV === 'development' && database === 1 && histo &&
                         <Button onClick={() => saveNaraHisto(histo?.id)}>
                             SAVE
                         </Button>

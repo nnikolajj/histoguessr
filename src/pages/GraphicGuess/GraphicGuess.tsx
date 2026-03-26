@@ -6,16 +6,20 @@ import {
     IconButton,
     Drawer,
     useMediaQuery,
-    Theme,
+    Theme, Link as MuiLink,
 } from "@mui/material";
 import MapCard from "../../Card/GraphicGuess/MapCard";
 import YearCard from "../../Card/GraphicGuess/YearCard";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
 import {useValidationData} from "../../data/ValidationData";
+import {Link} from "react-router-dom";
+import {useFilterData} from "../../data/FilterData";
+import ResultScreen from "./ResultScreen";
 
 function GraphicGuess() {
     const histoEntity = useValidationData(state => state.histoEntity);
     const points = useValidationData(state => state.points);
+    const endGame = useFilterData(state => state.endGame);
 
     // Mobile Responsive Logic
     const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
@@ -35,6 +39,24 @@ function GraphicGuess() {
 
     return (
         <>
+            <Box sx={{textAlign: "center", pt: 1, pb: 1}}>
+                <MuiLink component={Link}
+                         to="/"
+                         underline="none"
+                         sx={{color: "inherit"}}>
+                    <Typography variant="h4" component="h1" gutterBottom
+                                sx={{
+                                    fontFamily: "'Rye', serif",
+                                    fontSize: {xs: "2.5rem", md: "2.5rem"},
+                                    color: "#3E2714",
+                                }}>
+                        HistoArch
+
+                    </Typography>
+                </MuiLink>
+            </Box>
+
+            { !endGame ?
             <Box
                 sx={{
                     display: "flex",
@@ -129,6 +151,9 @@ function GraphicGuess() {
                     </Typography>
                 </Box>
             </Box>
+                :
+                <ResultScreen/>
+            }
         </>
 
     );

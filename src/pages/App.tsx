@@ -21,7 +21,7 @@ function App () {
                 <Routes>
                     <Route path="/" element={<Startpage />} />
                     <Route path="/histoguessing" element={<GraGuessLayout />} />
-                    <Route path="/histoguessing/:id" element={<GraphicGuess />} />
+                    <Route path="/histoguessing/game" element={<GraphicGuess />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/user/:id" element={<Profile />} />
                     <Route path="/artefact" element={<ArtefactGuess />} />

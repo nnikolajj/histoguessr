@@ -1,17 +1,28 @@
-import {Box, Button, ButtonGroup, Card, Typography} from "@mui/material";
+import {Box, Button, ButtonGroup, Card, CircularProgress, Typography} from "@mui/material";
 import {useFilterData} from "../../data/FilterData";
-import {validateHisto} from "../../Service/HistoService";
-import {validateNaraHisto} from "../../Service/NaraService";
 import MainButton from "../../Components/MainButton";
 import {startGame} from "../../Service/GameService";
-import {GameSeedEntity} from "../../Entity/GameSeedEntity";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-function GraGuessSettings(){
+function GraGuessSettings() {
 
     const database = useFilterData(state => state.database)
     const setDatabase = useFilterData(state => state.setDatabase);
     const setGameSeed = useFilterData(state => state.setSeed);
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setGameSeed({
+            id: "",
+            histoId: [],
+            type: 0,
+            shortId: "",
+            state: 0,
+            date: ""
+        })
+    }, []);
 
     return (
         <Box
@@ -29,45 +40,63 @@ function GraGuessSettings(){
                 borderRadius: "12px",
                 boxShadow: "0px 4px 20px rgba(89, 58, 32, 0.15)",
                 textAlign: "center",
+                p: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
             }}>
 
-                <Typography variant="h6" sx={{ fontFamily: "'Georgia', serif", color: "#3E2714", fontWeight: "bold" }}>
-
-                Game Settings
+                <Typography variant="h6" sx={{fontFamily: "'Georgia', serif", color: "#3E2714", fontWeight: "bold"}}>
+                    Game Settings
                 </Typography>
 
-            <ButtonGroup
-                variant="outlined"
-                aria-label="Database selection"
-                sx={{
-                    marginTop: 3,
-                    '& .MuiButton-root': {
-                        color: '#593a20',
-                        borderColor: 'rgba(89, 58, 32, 0.4)',
-                        fontWeight: 'bold',
-                        fontFamily: "'Georgia', serif",
-                        padding: '6px 24px',
-                        '&:hover': {
-                            borderColor: '#593a20',
-                            backgroundColor: 'rgba(89, 58, 32, 0.08)'
-                        }
-                    },
-                }}
-            >
-                <Button onClick={() => setDatabase(0)}>Own DB</Button>
-                <Button onClick={() => setDatabase(1)}>Nara</Button>
-            </ButtonGroup>
+                {isLoading ? (
+                    <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+                        <CircularProgress color="secondary"/>
+                    </Box>
+                ) : (
+                    <>
+                        <ButtonGroup
+                            variant="outlined"
+                            sx={{
+                                marginTop: 3,
+                                '& .MuiButton-root': {
+                                    color: '#593a20',
+                                    borderColor: 'rgba(89, 58, 32, 0.4)',
+                                },
+                            }}
+                        >
+                            <Button
+                                sx={{ backgroundColor: database === 0 ? 'rgba(89, 58, 32, 0.08)' : '' }}
+                                onClick={() => setDatabase(0)}
+                            >
+                                Own DB
+                            </Button>
+                            <Button
+                                sx={{ backgroundColor: database === 1 ? 'rgba(89, 58, 32, 0.08)' : '' }}
+                                onClick={() => setDatabase(1)}
+                            >
+                                Nara
+                            </Button>
+                        </ButtonGroup>
 
-                <MainButton
-                    onAction={async () => {
-                         const data = await startGame(database)
-                        data ? setGameSeed(data) : <> error </>
-
-                    }}
-                    size={5}
-                    text={<><span style={{ fontSize: '1.5em', marginRight: '12px' }}>⚜️</span> Start</>}
-
-                />
+                        <Box sx={{ marginTop: 'auto', width: '100%', display: 'flex', justifyContent: 'center', pb: 2 }}>
+                            <MainButton
+                                onAction={async () => {
+                                    setIsLoading(true)
+                                    const data = await startGame(database)
+                                    if (data) {
+                                        setGameSeed(data)
+                                        setIsLoading(false)
+                                        navigate("game")
+                                    }
+                                }}
+                                size={5}
+                                text={<><span style={{fontSize: '1.5em', marginRight: '12px'}}>⚜️</span> Start</>}
+                            />
+                        </Box>
+                    </>
+                )}
             </Card>
         </Box>
     );

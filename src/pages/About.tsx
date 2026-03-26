@@ -30,7 +30,7 @@ function About() {
                                     fontSize: {xs: "2.5rem", md: "2.5rem"},
                                     color: "#3E2714",
                                 }}>
-                        History Vault
+                        HistoArch
 
                     </Typography>
                 </MuiLink>

@@ -12,7 +12,7 @@ function Startpage () {
                             fontSize: {xs: "2.5rem", md: "4rem"},
                             color: "#3E2714",
                         }}>
-                History Vault
+                HistoArch
             </Typography>
         </Box>
             <Divider sx={{width: "80%", margin: "0 auto", borderColor: "rgba(89, 58, 32, 0.3)"}}/>
